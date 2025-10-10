@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>VR Forest Scene</title>
+    <title>VR Forest Scene (Hand Tracking)</title>
 
     <!-- A-Frame 本体 -->
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
@@ -12,7 +12,10 @@
   </head>
 
   <body>
-    <a-scene>
+    <a-scene 
+      vr-mode-ui="enabled: true" 
+      webxr="optionalFeatures: hand-tracking, local-floor">
+      
       <!-- 🎒 アセット -->
       <a-assets>
         <a-asset-item id="base" src="base.glb"></a-asset-item>
@@ -70,6 +73,15 @@
         look-controls 
         wasd-controls="acceleration: 10"  
         position="5 -0.1 -7.5">
+      </a-entity>
+
+      <!-- ✋ ハンドトラッキング -->
+      <a-entity 
+        hand-tracking-controls="hand: left; modelColor: #ffb6c1">
+      </a-entity>
+
+      <a-entity 
+        hand-tracking-controls="hand: right; modelColor: #add8e6">
       </a-entity>
 
       <!-- 📜 カメラの向き調整スクリプト -->
