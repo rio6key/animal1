@@ -44,21 +44,21 @@
       <a-entity light="type: directional; intensity: 1.5" position="10 20 10"></a-entity>
       <a-entity light="type: ambient; intensity: 0.5"></a-entity>
 
-      <!-- 🎥 カメラ -->
-     <a-entity 
-  id="camera"
-  camera 
-  look-controls 
-  wasd-controls="acceleration: 10"  
-  position="5 -0.1 -7.5">
-</a-entity>
+      <!-- 🎥 カメラ（🦊の前に配置） -->
+      <a-entity 
+        id="camera"
+        camera 
+        look-controls 
+        wasd-controls="acceleration: 10"  
+        position="5 -0.1 -4.5">
+      </a-entity>
 
-
+      <!-- 📜 カメラ初期向き調整スクリプト -->
       <script>
-        // ページロード後にカメラの初期向きを調整
         const cam = document.querySelector('#camera');
         cam.addEventListener('loaded', () => {
-          cam.components['look-controls'].yawObject.rotation.y = THREE.MathUtils.degToRad(-180);
+          // カメラをキツネ方向（後方）に向ける
+          cam.components['look-controls'].yawObject.rotation.y = THREE.MathUtils.degToRad(180);
           cam.components['look-controls'].pitchObject.rotation.x = 0;
         });
       </script>
