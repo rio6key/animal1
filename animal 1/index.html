@@ -18,7 +18,7 @@
       <!-- 🌌 空 -->
       <a-sky color="#b3e5ff"></a-sky>
 
-      <!-- VR空間のベース -->
+      <!-- ベース -->
       <a-entity 
         gltf-model="#base" 
         position="0 0 0" 
@@ -36,7 +36,7 @@
         animation-mixer>
       </a-entity>
 
-      <!-- 🌲 林の木 -->
+      <!-- 🌲 木 -->
       <a-entity gltf-model="#pineTree" position="-1 0 -1" scale="0.2 0.8 0.2"></a-entity>
       <a-entity gltf-model="#pineTree" position="2 0 -2" scale="0.25 1 0.25"></a-entity>
 
@@ -44,8 +44,8 @@
       <a-entity light="type: directional; intensity: 1.5" position="10 20 10"></a-entity>
       <a-entity light="type: ambient; intensity: 0.5"></a-entity>
 
-      <!-- 🎥 カメラ（🦊と同じ位置・向き） -->
-      <a-entity id="camera-rig" position="5 -0.15 -7.3" rotation="0 180 0">
+      <!-- 🎥 カメラ：キツネより右・下・反転 -->
+      <a-entity id="camera-rig" position="7 -0.6 -7.3" rotation="0 0 0">
         <a-entity 
           id="camera"
           camera
@@ -62,18 +62,18 @@
 
         cam.addEventListener('loaded', () => {
           cam.components['look-controls'].pitchObject.rotation.x = 0;
-          cam.components['look-controls'].yawObject.rotation.y = THREE.MathUtils.degToRad(180);
+          cam.components['look-controls'].yawObject.rotation.y = THREE.MathUtils.degToRad(0); // 180度反転方向
         });
 
-        // VRモードの位置ズレ補正
+        // VRモード位置補正
         const scene = document.querySelector('a-scene');
         scene.addEventListener('enter-vr', () => {
-          rig.object3D.position.set(5, -0.15, -7.3);
-          rig.object3D.rotation.set(0, THREE.MathUtils.degToRad(180), 0);
+          rig.object3D.position.set(7, -0.6, -7.3);
+          rig.object3D.rotation.set(0, THREE.MathUtils.degToRad(0), 0);
         });
         scene.addEventListener('exit-vr', () => {
-          rig.object3D.position.set(5, -0.15, -7.3);
-          rig.object3D.rotation.set(0, THREE.MathUtils.degToRad(180), 0);
+          rig.object3D.position.set(7, -0.6, -7.3);
+          rig.object3D.rotation.set(0, THREE.MathUtils.degToRad(0), 0);
         });
       </script>
 
