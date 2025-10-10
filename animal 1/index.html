@@ -18,7 +18,7 @@
       <!-- 🌌 空 -->
       <a-sky color="#b3e5ff"></a-sky>
 
-      <!-- ベース -->
+      <!-- VR空間のベース -->
       <a-entity 
         gltf-model="#base" 
         position="0 0 0" 
@@ -36,7 +36,7 @@
         animation-mixer>
       </a-entity>
 
-      <!-- 🌲 木 -->
+      <!-- 🌲 林の木 -->
       <a-entity gltf-model="#pineTree" position="-1 0 -1" scale="0.2 0.8 0.2"></a-entity>
       <a-entity gltf-model="#pineTree" position="2 0 -2" scale="0.25 1 0.25"></a-entity>
 
@@ -44,37 +44,35 @@
       <a-entity light="type: directional; intensity: 1.5" position="10 20 10"></a-entity>
       <a-entity light="type: ambient; intensity: 0.5"></a-entity>
 
-      <!-- 🎥 カメラを固定するための親エンティティ -->
-      <a-entity id="camera-rig" position="5 0 -4.5" rotation="0 180 0">
+      <!-- 🎥 カメラ（🦊と同じ位置・向き） -->
+      <a-entity id="camera-rig" position="5 -0.15 -7.3" rotation="0 180 0">
         <a-entity 
           id="camera"
           camera
           look-controls="pointerLockEnabled: true"
           wasd-controls="acceleration: 10"
-          position="0 1.6 0">
+          position="0 0 0">
         </a-entity>
       </a-entity>
 
       <!-- 📜 スクリプト -->
       <script>
-        // VRモードでも固定した位置・向きを保つようにする
         const rig = document.querySelector('#camera-rig');
         const cam = document.querySelector('#camera');
 
         cam.addEventListener('loaded', () => {
-          // 視線リセット
           cam.components['look-controls'].pitchObject.rotation.x = 0;
           cam.components['look-controls'].yawObject.rotation.y = THREE.MathUtils.degToRad(180);
         });
 
-        // VRモード突入・終了時にも位置リセット
+        // VRモードの位置ズレ補正
         const scene = document.querySelector('a-scene');
         scene.addEventListener('enter-vr', () => {
-          rig.object3D.position.set(5, 0, -4.5);
+          rig.object3D.position.set(5, -0.15, -7.3);
           rig.object3D.rotation.set(0, THREE.MathUtils.degToRad(180), 0);
         });
         scene.addEventListener('exit-vr', () => {
-          rig.object3D.position.set(5, 0, -4.5);
+          rig.object3D.position.set(5, -0.15, -7.3);
           rig.object3D.rotation.set(0, THREE.MathUtils.degToRad(180), 0);
         });
       </script>
