@@ -9,19 +9,6 @@
 
     <!-- animation-mixer 用の aframe-extras -->
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
-
-    <!-- カメラが地面を貫通しないようにするコンポーネント -->
-    <script>
-      AFRAME.registerComponent('prevent-ground-penetration', {
-        tick: function () {
-          const el = this.el;
-          // カメラが地面より下に行った場合は高さを戻す
-          if (el.object3D.position.y < 0.3) {
-            el.object3D.position.y = 0.3;
-          }
-        }
-      });
-    </script>
   </head>
 
   <body>
@@ -45,7 +32,7 @@
         scale="10 10 10">
       </a-entity>
 
-      <!-- 🦊 Fox（アニメーションあり） -->
+      <!-- 🦊 Fox -->
       <a-entity
         gltf-model="#fox"
         position="5 -0.15 -7.3"
@@ -54,12 +41,12 @@
         animation-mixer>
       </a-entity>
 
-      <!-- 🐴 Horse（アニメーション有効化） -->
+      <!-- 🐴 Horse -->
       <a-entity
         gltf-model="#horse"
-        position="5.7 1 -7.3"
+        position="5.7 -0.15 -7.3"
         rotation="0 0 0"
-        scale="0.06 0.06 0.06"
+        scale="0.6 0.6 0.6"
         animation-mixer>
       </a-entity>
 
@@ -77,18 +64,28 @@
         camera
         look-controls
         wasd-controls="acceleration: 10"
-        prevent-ground-penetration
-        position="5 0.3 -7.4">
+        position="5 -0.1 -7.4">
       </a-entity>
 
-      <!-- 📜 カメラ初期向き調整スクリプト -->
+      <!-- 📜 カメラ初期向き・高さ制限スクリプト -->
       <script>
         const cam = document.querySelector('#camera');
+        const minY = -0.1; // カメラが下がれる最小の高さ（ここより下は行かせない）
+
         cam.addEventListener('loaded', () => {
           // カメラをキツネ方向（後方）に向ける
-          cam.components['look-controls'].yawObject.rotation.y =
-            THREE.MathUtils.degToRad(180);
+          cam.components['look-controls'].yawObject.rotation.y = THREE.MathUtils.degToRad(180);
           cam.components['look-controls'].pitchObject.rotation.x = 0;
+        });
+
+        // フレームごとに高さチェック
+        cam.sceneEl.addEventListener('loaded', () => {
+          cam.sceneEl.addEventListener('tick', () => {
+            const pos = cam.object3D.position;
+            if (pos.y < minY) {
+              pos.y = minY;
+            }
+          });
         });
       </script>
     </a-scene>
