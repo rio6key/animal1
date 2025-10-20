@@ -32,7 +32,7 @@
         scale="10 10 10">
       </a-entity>
 
-      <!-- 🦊 Fox（アニメーションあり） -->
+      <!-- 🦊 Fox (アニメーション有効化) -->
       <a-entity
         gltf-model="#fox"
         position="5 -0.15 -7.3"
@@ -41,22 +41,37 @@
         animation-mixer>
       </a-entity>
 
-      <!-- 🐴 Horse（アニメーション有効化） -->
+      <!-- ❓ baseがもう一度配置されているが、もし誤りなら削除してOK -->
       <a-entity
-        gltf-model="#horse"
-        position="6 -0.15 -7.3"
+        gltf-model="#base"
+        position="3 -0.15 -7.3"
         rotation="0 180 0"
         scale="0.01 0.01 0.01"
         animation-mixer>
       </a-entity>
 
       <!-- 🌲 林の木 -->
-      <a-entity gltf-model="#pineTree" position="-1 0 -1" scale="0.2 0.8 0.2"></a-entity>
-      <a-entity gltf-model="#pineTree" position="2 0 -2" scale="0.25 1 0.25"></a-entity>
+      <a-entity
+        gltf-model="#pineTree"
+        position="-1 0 -1"
+        scale="0.2 0.8 0.2">
+      </a-entity>
+
+      <a-entity
+        gltf-model="#pineTree"
+        position="2 0 -2"
+        scale="0.25 1 0.25">
+      </a-entity>
 
       <!-- 💡 ライト -->
-      <a-entity light="type: directional; intensity: 1.5" position="10 20 10"></a-entity>
-      <a-entity light="type: ambient; intensity: 0.5"></a-entity>
+      <a-entity
+        light="type: directional; intensity: 1.5"
+        position="10 20 10">
+      </a-entity>
+
+      <a-entity
+        light="type: ambient; intensity: 0.5">
+      </a-entity>
 
       <!-- 🎥 カメラ（🦊の前に配置） -->
       <a-entity
@@ -72,7 +87,8 @@
         const cam = document.querySelector('#camera');
         cam.addEventListener('loaded', () => {
           // カメラをキツネ方向（後方）に向ける
-          cam.components['look-controls'].yawObject.rotation.y = THREE.MathUtils.degToRad(180);
+          cam.components['look-controls'].yawObject.rotation.y =
+            THREE.MathUtils.degToRad(180);
           cam.components['look-controls'].pitchObject.rotation.x = 0;
         });
       </script>
