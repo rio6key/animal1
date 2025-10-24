@@ -58,34 +58,40 @@
       <a-entity light="type: directional; intensity: 1.5" position="10 20 10"></a-entity>
       <a-entity light="type: ambient; intensity: 0.5"></a-entity>
 
-      <!-- 🎥 カメラ（🦊の前に配置） -->
+      <!-- 🎥 カメラ -->
       <a-entity
         id="camera"
-        camera
+        camera="active: true"
         look-controls
         wasd-controls="acceleration: 10"
-        position="5 -0.1 -7.4">
+        position="5 1.6 -7.4"
+        rotation="0 180 0">
       </a-entity>
 
-      <!-- 📜 カメラ初期向き・高さ制限スクリプト -->
+      <!-- 📜 カメラ制御スクリプト -->
       <script>
         const cam = document.querySelector('#camera');
-        const minY = -0.1; // カメラが下がれる最小の高さ（ここより下は行かせない）
+        const minY = 0.0; // カメラの最低高さ
 
+        // VRモード開始時に位置・向きをリセット
+        AFRAME.scenes[0].addEventListener('enter-vr', () => {
+          cam.setAttribute('position', { x: 5, y: 1.6, z: -7.4 });
+          cam.setAttribute('rotation', { x: 0, y: 180, z: 0 });
+        });
+
+        // 通常時もロード後に向きを修正
         cam.addEventListener('loaded', () => {
-          // カメラをキツネ方向（後方）に向ける
-          cam.components['look-controls'].yawObject.rotation.y = THREE.MathUtils.degToRad(180);
-          cam.components['look-controls'].pitchObject.rotation.x = 0;
+          const look = cam.components['look-controls'];
+          if (look && look.yawObject && look.pitchObject) {
+            look.yawObject.rotation.y = THREE.MathUtils.degToRad(180);
+            look.pitchObject.rotation.x = 0;
+          }
         });
 
         // フレームごとに高さチェック
-        cam.sceneEl.addEventListener('loaded', () => {
-          cam.sceneEl.addEventListener('tick', () => {
-            const pos = cam.object3D.position;
-            if (pos.y < minY) {
-              pos.y = minY;
-            }
-          });
+        cam.sceneEl.addEventListener('tick', () => {
+          const pos = cam.object3D.position;
+          if (pos.y < minY) pos.y = minY;
         });
       </script>
     </a-scene>
