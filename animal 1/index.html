@@ -67,27 +67,6 @@
         position="5 -0.1 -7.4">
       </a-entity>
 
-      <!-- 📜 カメラ初期向き・高さ制限スクリプト -->
-      <script>
-        const cam = document.querySelector('#camera');
-        const minY = -0.1; // カメラが下がれる最小の高さ
-
-        // カメラ初期向き設定
-        cam.addEventListener('loaded', () => {
-          cam.components['look-controls'].yawObject.rotation.y = THREE.MathUtils.degToRad(180);
-          cam.components['look-controls'].pitchObject.rotation.x = 0;
-        });
-
-        // 高さ制限チェック
-        cam.sceneEl.addEventListener('loaded', () => {
-          cam.sceneEl.addEventListener('tick', () => {
-            const pos = cam.object3D.position;
-            if (pos.y < minY) {
-              pos.y = minY;
-            }
-          });
-        });
-      </script>
     </a-scene>
   </body>
 </html>
