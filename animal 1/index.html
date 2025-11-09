@@ -41,7 +41,7 @@
         scale="0.04 0.04 0.04"
         animation-mixer>
       </a-entity>
-<!-- 🐴 Horse -->
+<!-- 🐴 親馬 -->
 <a-entity
   gltf-model="#horse"
   position="5.4 0 -8"
@@ -49,6 +49,16 @@
   scale="0.09 0.09 0.09"
   animation-mixer
   animation="property: position; to: 7 0 -5; dur: 24000; easing: linear; dir: alternate; loop: true">
+</a-entity>
+
+<!-- 🐎 仔馬（親馬の左隣、少し小さく） -->
+<a-entity
+  gltf-model="#horse"
+  position="5.1 0 -8.2"
+  rotation="0 25 0"
+  scale="0.06 0.06 0.06"
+  animation-mixer
+  animation="property: position; to: 6.7 0 -5.2; dur: 24000; easing: linear; dir: alternate; loop: true">
 </a-entity>
 
 
