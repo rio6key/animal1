@@ -15,6 +15,7 @@
     <a-scene>
       <!-- 🎒 アセット -->
       <a-assets>
+        <img id="startImage" src="sample.png" />
         <a-asset-item id="base" src="base.glb"></a-asset-item>
         <a-asset-item id="fox" src="foxs.glb"></a-asset-item>
         <a-asset-item id="horse" src="horse.glb"></a-asset-item>
@@ -36,55 +37,13 @@
       </a-entity>
 
       <!-- 🌲🌳 木々配置（7本） -->
-      <!-- 🦊右手前 -->
-      <a-entity
-        gltf-model="#pineTree"
-        position="3.5 0 -6.5"
-        scale="0.22 0.9 0.22">
-      </a-entity>
-
-      <!-- 奥背景 -->
-      <a-entity
-        gltf-model="#pineTree"
-        position="6.5 0 -9"
-        scale="0.25 1.1 0.25">
-      </a-entity>
-
-      <!-- 🦊の左後ろ -->
-      <a-entity
-        gltf-model="#pineTree"
-        position="4.2 0 -5.5"
-        scale="0.2 0.8 0.2">
-      </a-entity>
-
-      <!-- 🐴右奥 -->
-      <a-entity
-        gltf-model="#pineTree"
-        position="7.5 0 -6"
-        scale="0.22 0.9 0.22">
-      </a-entity>
-
-      <!-- 奥の大木 -->
-      <a-entity
-        gltf-model="#Tree1"
-        position="5.2 -0.1 -9.3"
-        scale="0.6 0.6 0.6">
-      </a-entity>
-
-      <!-- 🐘左奥 -->
-      <a-entity
-        gltf-model="#Tree2"
-        position="3.8 0 -8.6"
-        rotation="0 10 0"
-        scale="0.45 0.45 0.45">
-      </a-entity>
-
-      <!-- 手前の低めの木 -->
-      <a-entity
-        gltf-model="#pineTree"
-        position="6 0 -4.6"
-        scale="0.15 0.6 0.15">
-      </a-entity>
+      <a-entity gltf-model="#pineTree" position="3.5 0 -6.5" scale="0.22 0.9 0.22"></a-entity>
+      <a-entity gltf-model="#pineTree" position="6.5 0 -9" scale="0.25 1.1 0.25"></a-entity>
+      <a-entity gltf-model="#pineTree" position="4.2 0 -5.5" scale="0.2 0.8 0.2"></a-entity>
+      <a-entity gltf-model="#pineTree" position="7.5 0 -6" scale="0.22 0.9 0.22"></a-entity>
+      <a-entity gltf-model="#Tree1" position="5.2 -0.1 -9.3" scale="0.6 0.6 0.6"></a-entity>
+      <a-entity gltf-model="#Tree2" position="3.8 0 -8.6" rotation="0 10 0" scale="0.45 0.45 0.45"></a-entity>
+      <a-entity gltf-model="#pineTree" position="6 0 -4.6" scale="0.15 0.6 0.15"></a-entity>
 
       <!-- 🦊 Fox -->
       <a-entity
@@ -140,6 +99,34 @@
       <a-entity id="cameraRig" position="5 -1.1 -7.9" rotation="0 180 0">
         <a-camera look-controls wasd-controls="acceleration:10"></a-camera>
       </a-entity>
+
+      <!-- 🖼️ VR空間上に表示するスタート画像 -->
+      <a-entity id="startImageEntity" position="5 0 -6.5">
+        <a-image
+          src="#startImage"
+          width="3"
+          height="2"
+          position="0 1.5 0"
+          class="clickable">
+        </a-image>
+      </a-entity>
+
+      <!-- カーソル（クリック用） -->
+      <a-entity camera look-controls>
+        <a-cursor
+          fuse="true"
+          fuse-timeout="500"
+          material="color: white; shader: flat">
+        </a-cursor>
+      </a-entity>
     </a-scene>
+
+    <script>
+      // クリックで画像を非表示にする処理
+      const imgEntity = document.getElementById('startImageEntity');
+      imgEntity.addEventListener('click', () => {
+        imgEntity.setAttribute('visible', 'false');
+      });
+    </script>
   </body>
 </html>
