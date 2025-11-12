@@ -3,28 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <title>VR Forest Scene</title>
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
 
-    <style>
-      /* 🖼️ スタート画面（全画面オーバーレイ） */
-      #startScreen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: url("sample.png") center center / cover no-repeat;
-        z-index: 999; /* 最前面に表示 */
-        cursor: pointer;
-      }
-    </style>
+    <!-- A-Frame 本体 -->
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+
+    <!-- animation-mixer 用の aframe-extras -->
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
   </head>
 
   <body>
-    <!-- 🖼️ 最初に表示されるスタート画面 -->
-    <div id="startScreen"></div>
-
     <a-scene>
       <!-- 🎒 アセット -->
       <a-assets>
@@ -37,22 +24,76 @@
         <a-asset-item id="pineTree" src="Geometric_Pine_Tree_1002014837_texture.glb"></a-asset-item>
       </a-assets>
 
+      <!-- 🌌 空 -->
       <a-sky color="#b3e5ff"></a-sky>
 
       <!-- 🏞️ ベース -->
-      <a-entity gltf-model="#base" position="0 0 0" rotation="0 90 0" scale="10 10 10"></a-entity>
+      <a-entity
+        gltf-model="#base"
+        position="0 0 0"
+        rotation="0 90 0"
+        scale="10 10 10">
+      </a-entity>
 
-      <!-- 🌲🌳 木々配置 -->
-      <a-entity gltf-model="#pineTree" position="3.5 0 -6.5" scale="0.22 0.9 0.22"></a-entity>
-      <a-entity gltf-model="#pineTree" position="6.5 0 -9" scale="0.25 1.1 0.25"></a-entity>
-      <a-entity gltf-model="#pineTree" position="4.2 0 -5.5" scale="0.2 0.8 0.2"></a-entity>
-      <a-entity gltf-model="#pineTree" position="7.5 0 -6" scale="0.22 0.9 0.22"></a-entity>
-      <a-entity gltf-model="#Tree1" position="5.2 -0.1 -9.3" scale="0.6 0.6 0.6"></a-entity>
-      <a-entity gltf-model="#Tree2" position="3.8 0 -8.6" rotation="0 10 0" scale="0.45 0.45 0.45"></a-entity>
-      <a-entity gltf-model="#pineTree" position="6 0 -4.6" scale="0.15 0.6 0.15"></a-entity>
+      <!-- 🌲🌳 木々配置（7本） -->
+      <!-- 🦊右手前 -->
+      <a-entity
+        gltf-model="#pineTree"
+        position="3.5 0 -6.5"
+        scale="0.22 0.9 0.22">
+      </a-entity>
+
+      <!-- 奥背景 -->
+      <a-entity
+        gltf-model="#pineTree"
+        position="6.5 0 -9"
+        scale="0.25 1.1 0.25">
+      </a-entity>
+
+      <!-- 🦊の左後ろ -->
+      <a-entity
+        gltf-model="#pineTree"
+        position="4.2 0 -5.5"
+        scale="0.2 0.8 0.2">
+      </a-entity>
+
+      <!-- 🐴右奥 -->
+      <a-entity
+        gltf-model="#pineTree"
+        position="7.5 0 -6"
+        scale="0.22 0.9 0.22">
+      </a-entity>
+
+      <!-- 奥の大木 -->
+      <a-entity
+        gltf-model="#Tree1"
+        position="5.2 -0.1 -9.3"
+        scale="0.6 0.6 0.6">
+      </a-entity>
+
+      <!-- 🐘左奥 -->
+      <a-entity
+        gltf-model="#Tree2"
+        position="3.8 0 -8.6"
+        rotation="0 10 0"
+        scale="0.45 0.45 0.45">
+      </a-entity>
+
+      <!-- 手前の低めの木 -->
+      <a-entity
+        gltf-model="#pineTree"
+        position="6 0 -4.6"
+        scale="0.15 0.6 0.15">
+      </a-entity>
 
       <!-- 🦊 Fox -->
-      <a-entity gltf-model="#fox" position="5 -0.15 -7.3" rotation="0 180 0" scale="0.04 0.04 0.04" animation-mixer></a-entity>
+      <a-entity
+        gltf-model="#fox"
+        position="5 -0.15 -7.3"
+        rotation="0 180 0"
+        scale="0.04 0.04 0.04"
+        animation-mixer>
+      </a-entity>
 
       <!-- 🐴 親馬 -->
       <a-entity
@@ -75,8 +116,21 @@
       </a-entity>
 
       <!-- 🐘 親子ゾウ -->
-      <a-entity gltf-model="#zou" position="5.99 -0.2 -6.3" rotation="0 -55 0" scale="0.1 0.1 0.1" animation-mixer></a-entity>
-      <a-entity gltf-model="#zou" position="5.99 -0.1 -6.7" rotation="0 -55 0" scale="0.05 0.05 0.05" animation-mixer></a-entity>
+      <a-entity
+        gltf-model="#zou"
+        position="5.99 -0.2 -6.3"
+        rotation="0 -55 0"
+        scale="0.1 0.1 0.1"
+        animation-mixer>
+      </a-entity>
+
+      <a-entity
+        gltf-model="#zou"
+        position="5.99 -0.1 -6.7"
+        rotation="0 -55 0"
+        scale="0.05 0.05 0.05"
+        animation-mixer>
+      </a-entity>
 
       <!-- 💡 ライト -->
       <a-entity light="type: directional; intensity: 1.5" position="10 20 10"></a-entity>
@@ -87,20 +141,5 @@
         <a-camera look-controls wasd-controls="acceleration:10"></a-camera>
       </a-entity>
     </a-scene>
-
-    <script>
-      // 📱 スマホVRでもクリック・タップでスタート可能
-      const startScreen = document.getElementById("startScreen");
-      startScreen.addEventListener("click", () => {
-        startScreen.style.display = "none";
-      });
-
-      // 🎮 VRコントローラーボタンにも対応
-      document.addEventListener("keydown", (e) => {
-        if (e.code === "Space" || e.code === "Enter") {
-          startScreen.style.display = "none";
-        }
-      });
-    </script>
   </body>
 </html>
