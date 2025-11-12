@@ -3,18 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <title>VR Forest Scene</title>
-
-    <!-- A-Frame -->
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <!-- animation-mixer -->
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+
+    <style>
+      /* 🖼️ スタート画面（全画面オーバーレイ） */
+      #startScreen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: url("sample.png") center center / cover no-repeat;
+        z-index: 999; /* 最前面に表示 */
+        cursor: pointer;
+      }
+    </style>
   </head>
 
   <body>
+    <!-- 🖼️ 最初に表示されるスタート画面 -->
+    <div id="startScreen"></div>
+
     <a-scene>
       <!-- 🎒 アセット -->
       <a-assets>
-        <img id="startImage" src="sample.png" />
         <a-asset-item id="base" src="base.glb"></a-asset-item>
         <a-asset-item id="fox" src="foxs.glb"></a-asset-item>
         <a-asset-item id="horse" src="horse.glb"></a-asset-item>
@@ -24,32 +37,42 @@
         <a-asset-item id="pineTree" src="Geometric_Pine_Tree_1002014837_texture.glb"></a-asset-item>
       </a-assets>
 
-      <!-- 🌌 空 -->
       <a-sky color="#b3e5ff"></a-sky>
-
-      <!-- 🖼️ VR空間内のスタート画像 -->
-      <a-image
-        id="startOverlay"
-        src="#startImage"
-        position="5 0 -6"
-        scale="6 3 1"
-        look-at="#cameraRig"
-        class="clickable">
-      </a-image>
 
       <!-- 🏞️ ベース -->
       <a-entity gltf-model="#base" position="0 0 0" rotation="0 90 0" scale="10 10 10"></a-entity>
+
+      <!-- 🌲🌳 木々配置 -->
+      <a-entity gltf-model="#pineTree" position="3.5 0 -6.5" scale="0.22 0.9 0.22"></a-entity>
+      <a-entity gltf-model="#pineTree" position="6.5 0 -9" scale="0.25 1.1 0.25"></a-entity>
+      <a-entity gltf-model="#pineTree" position="4.2 0 -5.5" scale="0.2 0.8 0.2"></a-entity>
+      <a-entity gltf-model="#pineTree" position="7.5 0 -6" scale="0.22 0.9 0.22"></a-entity>
+      <a-entity gltf-model="#Tree1" position="5.2 -0.1 -9.3" scale="0.6 0.6 0.6"></a-entity>
+      <a-entity gltf-model="#Tree2" position="3.8 0 -8.6" rotation="0 10 0" scale="0.45 0.45 0.45"></a-entity>
+      <a-entity gltf-model="#pineTree" position="6 0 -4.6" scale="0.15 0.6 0.15"></a-entity>
 
       <!-- 🦊 Fox -->
       <a-entity gltf-model="#fox" position="5 -0.15 -7.3" rotation="0 180 0" scale="0.04 0.04 0.04" animation-mixer></a-entity>
 
       <!-- 🐴 親馬 -->
-      <a-entity gltf-model="#horse" position="5.4 0 -8" rotation="0 25 0" scale="0.09 0.09 0.09"
-                animation-mixer animation="property: position; to: 7.1 0 -5; dur: 24000; easing: linear; loop: false"></a-entity>
+      <a-entity
+        gltf-model="#horse"
+        position="5.4 0 -8"
+        rotation="0 25 0"
+        scale="0.09 0.09 0.09"
+        animation-mixer
+        animation="property: position; to: 7.1 0 -5; dur: 24000; easing: linear; loop: false">
+      </a-entity>
 
       <!-- 🐎 仔馬 -->
-      <a-entity gltf-model="#horse" position="5.6 0 -8" rotation="0 25 0" scale="0.05 0.05 0.05"
-                animation-mixer animation="property: position; to: 7.3 0 -5; dur: 24000; easing: linear; loop: false"></a-entity>
+      <a-entity
+        gltf-model="#horse"
+        position="5.6 0 -8"
+        rotation="0 25 0"
+        scale="0.05 0.05 0.05"
+        animation-mixer
+        animation="property: position; to: 7.3 0 -5; dur: 24000; easing: linear; loop: false">
+      </a-entity>
 
       <!-- 🐘 親子ゾウ -->
       <a-entity gltf-model="#zou" position="5.99 -0.2 -6.3" rotation="0 -55 0" scale="0.1 0.1 0.1" animation-mixer></a-entity>
@@ -59,32 +82,25 @@
       <a-entity light="type: directional; intensity: 1.5" position="10 20 10"></a-entity>
       <a-entity light="type: ambient; intensity: 0.5"></a-entity>
 
-      <!-- 🎥 カメラ（マウス操作・VR操作両対応） -->
+      <!-- 🎥 カメラ -->
       <a-entity id="cameraRig" position="5 -1.1 -7.9" rotation="0 180 0">
-        <a-camera look-controls wasd-controls="acceleration:10">
-          <!-- 👆 カーソル（クリックできるようにする） -->
-          <a-cursor
-            id="cursor"
-            color="white"
-            fuse="true"
-            fuse-timeout="800">
-          </a-cursor>
-        </a-camera>
+        <a-camera look-controls wasd-controls="acceleration:10"></a-camera>
       </a-entity>
     </a-scene>
 
     <script>
-      // 🎬 A-Frame上でクリックイベントを設定
-      AFRAME.registerComponent('hide-on-click', {
-        init: function () {
-          this.el.addEventListener('click', () => {
-            this.el.parentNode.removeChild(this.el);
-          });
-        }
+      // 📱 スマホVRでもクリック・タップでスタート可能
+      const startScreen = document.getElementById("startScreen");
+      startScreen.addEventListener("click", () => {
+        startScreen.style.display = "none";
       });
 
-      // スタート画像にクリックで消える機能を付与
-      document.querySelector('#startOverlay').setAttribute('hide-on-click', '');
+      // 🎮 VRコントローラーボタンにも対応
+      document.addEventListener("keydown", (e) => {
+        if (e.code === "Space" || e.code === "Enter") {
+          startScreen.style.display = "none";
+        }
+      });
     </script>
   </body>
 </html>
