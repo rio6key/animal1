@@ -4,14 +4,30 @@
     <meta charset="UTF-8" />
     <title>VR Forest Scene</title>
 
-    <!-- A-Frame 本体 -->
+    <!-- A-Frame -->
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-
-    <!-- animation-mixer 用の aframe-extras -->
+    <!-- animation-mixer -->
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+
+    <style>
+      /* 🌄 スタート時の全画面画像 */
+      #startOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('sample.png') center center / cover no-repeat;
+        z-index: 9999;
+        cursor: pointer;
+      }
+    </style>
   </head>
 
   <body>
+    <!-- 🖼️ 最初に表示される画像 -->
+    <div id="startOverlay"></div>
+
     <a-scene>
       <!-- 🎒 アセット -->
       <a-assets>
@@ -28,66 +44,23 @@
       <a-sky color="#b3e5ff"></a-sky>
 
       <!-- 🏞️ ベース -->
-      <a-entity
-        gltf-model="#base"
-        position="0 0 0"
-        rotation="0 90 0"
-        scale="10 10 10">
-      </a-entity>
+      <a-entity gltf-model="#base" position="0 0 0" rotation="0 90 0" scale="10 10 10"></a-entity>
 
-      <!-- 🌲🌳 木々配置（7本） -->
-      <a-entity gltf-model="#pineTree" position="3.5 0 -6.5" scale="0.22 0.9 0.22"></a-entity> <!-- 🦊右手前 -->
-      <a-entity gltf-model="#pineTree" position="6.5 0 -9" scale="0.25 1.1 0.25"></a-entity> <!-- 奥背景 -->
-      <a-entity gltf-model="#pineTree" position="4.2 0 -5.5" scale="0.2 0.8 0.2"></a-entity> <!-- 🦊の左後ろ -->
-      <a-entity gltf-model="#pineTree" position="7.5 0 -6" scale="0.22 0.9 0.22"></a-entity> <!-- 🐴右奥 -->
-      <a-entity gltf-model="#Tree1" position="5.2 -0.1 -9.3" scale="0.6 0.6 0.6"></a-entity> <!-- 奥の大木 -->
-      <a-entity gltf-model="#Tree2" position="3.8 0 -8.6" rotation="0 10 0" scale="0.45 0.45 0.45"></a-entity> <!-- 🐘左奥 -->
-      <a-entity gltf-model="#pineTree" position="6 0 -4.6" scale="0.15 0.6 0.15"></a-entity> <!-- 手前の低めの木 -->
 
       <!-- 🦊 Fox -->
-      <a-entity
-        gltf-model="#fox"
-        position="5 -0.15 -7.3"
-        rotation="0 180 0"
-        scale="0.04 0.04 0.04"
-        animation-mixer>
-      </a-entity>
+      <a-entity gltf-model="#fox" position="5 -0.15 -7.3" rotation="0 180 0" scale="0.04 0.04 0.04" animation-mixer></a-entity>
 
       <!-- 🐴 親馬 -->
-      <a-entity
-        gltf-model="#horse"
-        position="5.4 0 -8"
-        rotation="0 25 0"
-        scale="0.09 0.09 0.09"
-        animation-mixer
-        animation="property: position; to: 7.1 0 -5; dur: 24000; easing: linear; loop: false">
-      </a-entity>
+      <a-entity gltf-model="#horse" position="5.4 0 -8" rotation="0 25 0" scale="0.09 0.09 0.09"
+                animation-mixer animation="property: position; to: 7.1 0 -5; dur: 24000; easing: linear; loop: false"></a-entity>
 
       <!-- 🐎 仔馬 -->
-      <a-entity
-        gltf-model="#horse"
-        position="5.6 0 -8"
-        rotation="0 25 0"
-        scale="0.05 0.05 0.05"
-        animation-mixer
-        animation="property: position; to: 7.3 0 -5; dur: 24000; easing: linear; loop: false">
-      </a-entity>
+      <a-entity gltf-model="#horse" position="5.6 0 -8" rotation="0 25 0" scale="0.05 0.05 0.05"
+                animation-mixer animation="property: position; to: 7.3 0 -5; dur: 24000; easing: linear; loop: false"></a-entity>
 
       <!-- 🐘 親子ゾウ -->
-      <a-entity
-        gltf-model="#zou"
-        position="5.99 -0.2 -6.3"
-        rotation="0 -55 0"
-        scale="0.1 0.1 0.1"
-        animation-mixer>
-      </a-entity>
-      <a-entity
-        gltf-model="#zou"
-        position="5.99 -0.1 -6.7"
-        rotation="0 -55 0"
-        scale="0.05 0.05 0.05"
-        animation-mixer>
-      </a-entity>
+      <a-entity gltf-model="#zou" position="5.99 -0.2 -6.3" rotation="0 -55 0" scale="0.1 0.1 0.1" animation-mixer></a-entity>
+      <a-entity gltf-model="#zou" position="5.99 -0.1 -6.7" rotation="0 -55 0" scale="0.05 0.05 0.05" animation-mixer></a-entity>
 
       <!-- 💡 ライト -->
       <a-entity light="type: directional; intensity: 1.5" position="10 20 10"></a-entity>
@@ -98,5 +71,20 @@
         <a-camera look-controls wasd-controls="acceleration:10"></a-camera>
       </a-entity>
     </a-scene>
+
+    <script>
+      const overlay = document.getElementById('startOverlay');
+      const scene = document.querySelector('a-scene');
+
+      // 🔹 PCなどでクリックでも開始できる
+      overlay.addEventListener('click', () => {
+        overlay.style.display = 'none';
+      });
+
+      // 🔹 VRコントローラーでボタンが押されたとき
+      scene.addEventListener('abuttondown', () => overlay.style.display = 'none');
+      scene.addEventListener('bbuttondown', () => overlay.style.display = 'none');
+      scene.addEventListener('triggerdown', () => overlay.style.display = 'none');
+    </script>
   </body>
 </html>
