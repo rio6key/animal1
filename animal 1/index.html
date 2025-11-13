@@ -12,7 +12,8 @@
   </head>
 
   <body>
-    <a-scene>
+    <!-- 🟢 マウスクリック用の cursor="rayOrigin: mouse" を追加 -->
+    <a-scene cursor="rayOrigin: mouse">
       <!-- 🎒 アセット -->
       <a-assets>
         <img id="startImage" src="sample.png" />
@@ -31,14 +32,6 @@
       <!-- 🏞️ ベース -->
       <a-entity gltf-model="#base" position="0 0 0" rotation="0 90 0" scale="10 10 10"></a-entity>
 
-      <!-- 🌲🌳 木々配置 -->
-      <a-entity gltf-model="#pineTree" position="3.5 0 -6.5" scale="0.22 0.9 0.22"></a-entity>
-      <a-entity gltf-model="#pineTree" position="6.5 0 -9" scale="0.25 1.1 0.25"></a-entity>
-      <a-entity gltf-model="#pineTree" position="4.2 0 -5.5" scale="0.2 0.8 0.2"></a-entity>
-      <a-entity gltf-model="#pineTree" position="7.5 0 -6" scale="0.22 0.9 0.22"></a-entity>
-      <a-entity gltf-model="#Tree1" position="5.2 -0.1 -9.3" scale="0.6 0.6 0.6"></a-entity>
-      <a-entity gltf-model="#Tree2" position="3.8 0 -8.6" rotation="0 10 0" scale="0.45 0.45 0.45"></a-entity>
-      <a-entity gltf-model="#pineTree" position="6 0 -4.6" scale="0.15 0.6 0.15"></a-entity>
 
       <!-- 🦊 Fox -->
       <a-entity gltf-model="#fox" position="5 -0.15 -7.3" rotation="0 180 0" scale="0.04 0.04 0.04" animation-mixer></a-entity>
@@ -80,25 +73,17 @@
         </a-image>
       </a-entity>
 
-      <!-- カーソル（VR操作でもクリック可能） -->
-      <a-entity camera look-controls>
-        <a-cursor fuse="true" fuse-timeout="500"
-                  material="color: white; shader: flat">
-        </a-cursor>
-      </a-entity>
+      <!-- 🟡 VRコントローラー（右手・左手） -->
+      <a-entity id="ctlR" laser-controls="hand: right" raycaster="objects: .clickable; lineColor: red;"></a-entity>
+      <a-entity id="ctlL" laser-controls="hand: left" raycaster="objects: .clickable; lineColor: blue;"></a-entity>
+
     </a-scene>
 
     <script>
       const imgPlane = document.getElementById('startImagePlane');
-      const scene = document.querySelector('a-scene');
 
-      // 🖱️ マウスクリックでフェードアウト
+      // 🖱️ マウスクリックまたはVRポインターでフェードアウト
       imgPlane.addEventListener('click', () => fadeOut(imgPlane));
-
-      // 🎮 VRコントローラーのボタンでも消える
-      scene.addEventListener('triggerdown', () => fadeOut(imgPlane));
-      scene.addEventListener('abuttondown', () => fadeOut(imgPlane));
-      scene.addEventListener('bbuttondown', () => fadeOut(imgPlane));
 
       // フェードアウト関数
       function fadeOut(el) {
