@@ -6,100 +6,136 @@
 
     <!-- A-Frame -->
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-
-    <!-- animation-mixer -->
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
   </head>
 
   <body>
-    <!-- 🟢 マウスクリック用の cursor="rayOrigin: mouse" を追加 -->
     <a-scene cursor="rayOrigin: mouse">
       <!-- 🎒 アセット -->
       <a-assets>
-        <img id="startImage" src="sample.png" />
-        <a-asset-item id="base" src="base.glb"></a-asset-item>
-        <a-asset-item id="fox" src="foxs.glb"></a-asset-item>
-        <a-asset-item id="horse" src="horse.glb"></a-asset-item>
-        <a-asset-item id="zou" src="zou.glb"></a-asset-item>
-        <a-asset-item id="Tree1" src="Tree1.glb"></a-asset-item>
-        <a-asset-item id="Tree2" src="Tree2.glb"></a-asset-item>
-        <a-asset-item id="pineTree" src="Geometric_Pine_Tree_1002014837_texture.glb"></a-asset-item>
+        <a-asset-item id="base" src="bease2.glb"></a-asset-item>
+        <audio id="natu" src="natu.mp3"></audio>
+        <audio id="zou" src="zou.mp3"></audio>
+        <audio id="uma" src="uma.mp3"></audio>
       </a-assets>
 
       <!-- 🌌 空 -->
-      <a-sky color="#b3e5ff"></a-sky>
+      <a-sky id="sky" color="#b3e5ff"></a-sky>
 
       <!-- 🏞️ ベース -->
-      <a-entity gltf-model="#base" position="0 0 0" rotation="0 90 0" scale="10 10 10"></a-entity>
-
-
-      <!-- 🦊 Fox -->
-      <a-entity gltf-model="#fox" position="5 -0.15 -7.3" rotation="0 180 0" scale="0.04 0.04 0.04" animation-mixer></a-entity>
-
-      <!-- 🐴 親馬 -->
-      <a-entity gltf-model="#horse" position="5.4 0 -8" rotation="0 25 0"
-                scale="0.09 0.09 0.09" animation-mixer
-                animation="property: position; to: 7.1 0 -5; dur: 24000; easing: linear; loop: false"></a-entity>
-
-      <!-- 🐎 仔馬 -->
-      <a-entity gltf-model="#horse" position="5.6 0 -8" rotation="0 25 0"
-                scale="0.05 0.05 0.05" animation-mixer
-                animation="property: position; to: 7.3 0 -5; dur: 24000; easing: linear; loop: false"></a-entity>
-
-      <!-- 🐘 親子ゾウ -->
-      <a-entity gltf-model="#zou" position="5.99 -0.2 -6.3"
-                rotation="0 -55 0" scale="0.1 0.1 0.1" animation-mixer></a-entity>
-      <a-entity gltf-model="#zou" position="5.99 -0.1 -6.7"
-                rotation="0 -55 0" scale="0.05 0.05 0.05" animation-mixer></a-entity>
+      <a-entity
+        gltf-model="#base"
+        position="0 0 0"
+        rotation="0 90 0"
+        scale="10 10 10"
+        animation-mixer
+      ></a-entity>
 
       <!-- 💡 ライト -->
-      <a-entity light="type: directional; intensity: 1.5" position="10 20 10"></a-entity>
-      <a-entity light="type: ambient; intensity: 0.5"></a-entity>
+      <a-entity id="dirLight" light="type: directional; intensity: 1.5" position="10 20 10"></a-entity>
+      <a-entity id="ambLight" light="type: ambient; intensity: 0.5"></a-entity>
 
-      <!-- 🎥 カメラ -->
+      <!-- 🎥 カメラリグ -->
       <a-entity id="cameraRig" position="5 -1.1 -7.9" rotation="0 180 0">
         <a-camera look-controls wasd-controls="acceleration:10"></a-camera>
+        <!-- VRコントローラー -->
+        <a-entity id="ctlR" laser-controls="hand: right"></a-entity>
+        <a-entity id="ctlL" laser-controls="hand: left"></a-entity>
       </a-entity>
 
-      <!-- 🖼️ VR空間上のスタート画像（クリックで消える） -->
-      <a-entity id="startImageEntity" position="5 0 -6.5">
-        <a-image id="startImagePlane"
-                 src="#startImage"
-                 width="3"
-                 height="2"
-                 position="0 1.5 0"
-          rotation="0 180 0"  
-                 opacity="1"
-                 class="clickable">
-        </a-image>
-      </a-entity>
-
-      <!-- 🟡 VRコントローラー（右手・左手） -->
-      <a-entity id="ctlR" laser-controls="hand: right" raycaster="objects: .clickable; lineColor: red;"></a-entity>
-      <a-entity id="ctlL" laser-controls="hand: left" raycaster="objects: .clickable; lineColor: blue;"></a-entity>
-
+      <!-- 🎵 音源 -->
+      <a-entity id="natuSound" sound="src: #natu; autoplay: false; loop: true; volume: 1"></a-entity>
+      <a-entity id="zouSound" sound="src: #zou; autoplay: false; loop: false; volume: 1"></a-entity>
+      <a-entity id="umaSound" sound="src: #uma; autoplay: false; loop: false; volume: 1"></a-entity>
     </a-scene>
 
     <script>
-      const imgPlane = document.getElementById('startImagePlane');
+      const natuSound = document.getElementById("natuSound");
+      const zouSound = document.getElementById("zouSound");
+      const umaSound = document.getElementById("umaSound");
+      const ctlR = document.getElementById("ctlR");
+      const ctlL = document.getElementById("ctlL");
+      const sky = document.getElementById("sky");
+      const dirLight = document.getElementById("dirLight");
+      const ambLight = document.getElementById("ambLight");
 
-      // 🖱️ マウスクリックまたはVRポインターでフェードアウト
-      imgPlane.addEventListener('click', () => fadeOut(imgPlane));
+      // 🌿 自然音ループ再生（初回クリックで開始）
+      let natuPlayed = false;
+      window.addEventListener("click", () => {
+        if (!natuPlayed) {
+          natuPlayed = true;
+          natuSound.components.sound.playSound();
+          console.log("🎵 natu.mp3 ループ再生開始");
+        }
+      });
 
-      // フェードアウト関数
-      function fadeOut(el) {
-        if (el.getAttribute('visible') === 'false') return;
-        let opacity = 1.0;
-        const fade = setInterval(() => {
-          opacity -= 0.05;
-          if (opacity <= 0) {
-            el.setAttribute('visible', 'false');
-            clearInterval(fade);
-          } else {
-            el.setAttribute('opacity', opacity);
-          }
-        }, 50);
-      }
+      // 🐘🐴 左手トリガーで交互に鳴く
+      let playZouNext = true;
+      ctlL.addEventListener("triggerdown", () => {
+        if (playZouNext) {
+          umaSound.components.sound.stopSound();
+          zouSound.components.sound.playSound();
+          console.log("🐘 ゾウの鳴き声！");
+        } else {
+          zouSound.components.sound.stopSound();
+          umaSound.components.sound.playSound();
+          console.log("🐴 ウマの鳴き声！");
+        }
+        playZouNext = !playZouNext;
+      });
+
+      // 🌙 右手トリガーで夜モード切替（アニメーション付き）
+      let isNight = false;
+      ctlR.addEventListener("triggerdown", () => {
+        if (!isNight) {
+          // 昼 → 夜
+          sky.removeAttribute("animation__toNight");
+          sky.setAttribute("animation__toNight", {
+            property: "color",
+            from: "#b3e5ff",
+            to: "#001a33",
+            dur: 2000,
+            easing: "easeInOutQuad"
+          });
+          dirLight.setAttribute("animation__dim", {
+            property: "light.intensity",
+            from: 1.5,
+            to: 0.1,
+            dur: 2000
+          });
+          ambLight.setAttribute("animation__dim2", {
+            property: "light.intensity",
+            from: 0.5,
+            to: 0.2,
+            dur: 2000
+          });
+          console.log("🌙 夜に変更");
+        } else {
+          // 夜 → 昼
+          sky.removeAttribute("animation__toDay");
+          sky.setAttribute("animation__toDay", {
+            property: "color",
+            from: "#001a33",
+            to: "#b3e5ff",
+            dur: 2000,
+            easing: "easeInOutQuad"
+          });
+          dirLight.setAttribute("animation__bright", {
+            property: "light.intensity",
+            from: 0.1,
+            to: 1.5,
+            dur: 2000
+          });
+          ambLight.setAttribute("animation__bright2", {
+            property: "light.intensity",
+            from: 0.2,
+            to: 0.5,
+            dur: 2000
+          });
+          console.log("☀️ 昼に戻す");
+        }
+        isNight = !isNight;
+      });
     </script>
   </body>
 </html>
