@@ -11,7 +11,7 @@
 
   <body>
     <a-scene cursor="rayOrigin: mouse">
-      <!-- 🎒 アセット -->
+     
       <a-assets>
         <a-asset-item id="base" src="bease2.glb"></a-asset-item>
         <audio id="natu" src="natu.mp3"></audio>
@@ -19,10 +19,8 @@
         <audio id="uma" src="uma.mp3"></audio>
       </a-assets>
 
-      <!-- 🌌 空 -->
       <a-sky id="sky" color="#b3e5ff"></a-sky>
 
-      <!-- 🏞️ ベース -->
       <a-entity
         gltf-model="#base"
         position="0 0 0"
@@ -31,11 +29,11 @@
         animation-mixer
       ></a-entity>
 
-      <!-- 💡 ライト -->
+
       <a-entity id="dirLight" light="type: directional; intensity: 1.5" position="10 20 10"></a-entity>
       <a-entity id="ambLight" light="type: ambient; intensity: 0.5"></a-entity>
 
-      <!-- 🎥 カメラリグ -->
+      <!-- カメラリグ -->
       <a-entity id="cameraRig" position="5 -1.1 -7.9" rotation="0 180 0">
         <a-camera look-controls wasd-controls="acceleration:10"></a-camera>
         <!-- VRコントローラー -->
@@ -43,7 +41,7 @@
         <a-entity id="ctlL" laser-controls="hand: left"></a-entity>
       </a-entity>
 
-      <!-- 🎵 音源 -->
+      <!-- 音源 -->
       <a-entity id="natuSound" sound="src: #natu; autoplay: false; loop: true; volume: 1"></a-entity>
       <a-entity id="zouSound" sound="src: #zou; autoplay: false; loop: false; volume: 1"></a-entity>
       <a-entity id="umaSound" sound="src: #uma; autoplay: false; loop: false; volume: 1"></a-entity>
@@ -59,7 +57,7 @@
       const dirLight = document.getElementById("dirLight");
       const ambLight = document.getElementById("ambLight");
 
-      // 🌿 自然音ループ再生（初回クリックで開始）
+      // 自然音ループ再生（初回クリックで開始）
       let natuPlayed = false;
       window.addEventListener("click", () => {
         if (!natuPlayed) {
@@ -69,22 +67,22 @@
         }
       });
 
-      // 🐘🐴 左手トリガーで交互に鳴く
+      // 左手トリガーで交互に鳴く
       let playZouNext = true;
       ctlL.addEventListener("triggerdown", () => {
         if (playZouNext) {
           umaSound.components.sound.stopSound();
           zouSound.components.sound.playSound();
-          console.log("🐘 ゾウの鳴き声！");
+          console.log("ゾウの鳴き声");
         } else {
           zouSound.components.sound.stopSound();
           umaSound.components.sound.playSound();
-          console.log("🐴 ウマの鳴き声！");
+          console.log("ウマの鳴き声");
         }
         playZouNext = !playZouNext;
       });
 
-      // 🌙 右手トリガーで夜モード切替（アニメーション付き）
+      // 右手トリガーで夜モード切替
       let isNight = false;
       ctlR.addEventListener("triggerdown", () => {
         if (!isNight) {
@@ -109,7 +107,7 @@
             to: 0.2,
             dur: 2000
           });
-          console.log("🌙 夜に変更");
+          
         } else {
           // 夜 → 昼
           sky.removeAttribute("animation__toDay");
@@ -132,7 +130,7 @@
             to: 0.5,
             dur: 2000
           });
-          console.log("☀️ 昼に戻す");
+          
         }
         isNight = !isNight;
       });
