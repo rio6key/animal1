@@ -67,21 +67,6 @@
         }
       });
 
-      // 左手トリガーで交互に鳴く
-      let playZouNext = true;
-      ctlL.addEventListener("triggerdown", () => {
-        if (playZouNext) {
-          umaSound.components.sound.stopSound();
-          zouSound.components.sound.playSound();
-          console.log("ゾウの鳴き声");
-        } else {
-          zouSound.components.sound.stopSound();
-          umaSound.components.sound.playSound();
-          console.log("ウマの鳴き声");
-        }
-        playZouNext = !playZouNext;
-      });
-
       // 右手トリガーで夜モード切替
       let isNight = false;
       ctlR.addEventListener("triggerdown", () => {
